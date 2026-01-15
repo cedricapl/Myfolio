@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" data-bs-theme="light">
- <head>
+<html lang="fr"> <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cédric Aplogan - CV Développeur Full Stack</title>
@@ -11,6 +10,19 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Le fix magique pour éviter le scroll horizontal chelou */
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    .container, .container-fluid {
+      overflow: hidden; /* Empêche les titres de bg de faire déborder la page */
+    }
+  </style>
 </head>
 
 
@@ -85,19 +97,19 @@
                     <div class="swiper-slide">
                       <div class="text-light-custom content-title fw-bold">Développement Front-end</div>
                       <p class="text-light-custom mb-4">
-                        Maîtrise de **HTML, CSS, JS** et de l'intégration responsive. Formation Sollearn (2022-2024).
+                        Maîtrise de HTML, CSS, JS et de l'intégration responsive. Formation Sollearn (2022-2024).
                       </p>
                     </div>
                     <div class="swiper-slide">
                       <div class="text-light-custom content-title fw-bold">Développement Back-end</div>
                       <p class="text-light-custom mb-4">
-                        Compétences en **Python, C** et gestion de bases de données **SQL**. Formation Sollearn (2024-2025).
+                        Compétences en Python, C et gestion de bases de données SQL. Formation Sollearn (2024-2025).
                       </p>
                     </div>
                     <div class="swiper-slide">
                       <div class="text-light-custom content-title fw-bold">Conception & Figma</div>
                       <p class="text-light-custom mb-4">
-                        Utilisation de **Figma** pour la conception de design, garantissant un pont parfait entre la vision et le code.
+                        Utilisation de Figma pour la conception de design, garantissant un pont parfait entre la vision et le code.
                       </p>
                     </div>
                   </div>
@@ -111,13 +123,18 @@
     </div>
   </header>
 
-  <section class="py-5 my-5 position-relative" id="about">
+  <section class="py-5 my-5 position-relative overflow-hidden" id="about">
     <div class="container">
-      <div class="row g-lg-5">
-        <div class="banner-image col-md-6" data-aos="clip-bottom" data-aos-duration="1000">
-                  </div>
+      <div class="position-absolute top-0 start-50 translate-middle-x text-center w-100">
+        <div class="syne-font section-title" data-aos="fade-up">À Propos</div>
+        <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="200">Cédric</div>
+        <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="400">Aplogan</div>
+      </div>
+
+      <div class="row g-lg-5 mt-5 pt-5">
+        <div class="banner-image col-md-6" data-aos="clip-bottom" data-aos-duration="1000"></div>
         <div class="col-md-6" data-aos="clip-top" data-aos-delay="1000">
-          <div class="content-title mb-4 fw-bold">À Propos de Cédric Aplogan</div>
+          <div class="content-title mb-4 fw-bold">Bio Technique</div>
           <blockquote class="fst-italic fs-4 mb-4">
             "FULL STACK Développeur, passionné par la résolution de problématiques complexes et l'efficacité logique."
           </blockquote>
@@ -127,7 +144,7 @@
           <p class="mb-5">
             Expérience Freelance depuis 2023 dans la création de sites web et le design Figma. Participation active à des projets d'innovation technologique, notamment dans la création d'une IA de gestion des réservations.
           </p>
-          <a href="mailto:cedricaplogan123@gmail.com" class="btn btn-custom d-flex align-items-center gap-2">
+          <a href="mailto:cedricaplogan123@gmail.com" class="btn btn-custom d-flex align-items-center gap-2 w-fit">
             <span>Me Contacter</span>
             <i class="fas fa-arrow-right"></i>
           </a>
@@ -140,60 +157,43 @@
 
   <section class="py-5 my-5 position-relative overflow-hidden" id="competences">
     <div class="container">
-      <div class="position-absolute top-0 start-50 translate-middle-x">
+      <div class="position-absolute top-0 start-50 translate-middle-x text-center w-100">
         <div class="syne-font section-title" data-aos="fade-up">Compétences</div>
         <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="200">Techniques</div>
         <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="400">Logiques</div>
       </div>
 
-      <div class="row">
-        <div class="col-md-6"></div>
+      <div class="row mt-5 pt-5">
         <div class="col-md-6 py-5">
           <div class="bg-light-alt p-5 rounded-4" data-aos="clip-bottom" data-aos-duration="1000">
             <div class="content-title mb-4 fw-bold">Hard Skills</div>
-
             <div class="mb-5">
               <div class="date-text mb-2">Langages (C, Python, JS, SQL)</div>
-              <h3 class="subtitle mb-2">Développement Front-end et Back-end</h3>
-              <p>
-                Maîtrise des langages clés pour le développement Full Stack, y compris les bases de données SQL.
-              </p>
+              <h3 class="subtitle mb-2">Développement Full Stack</h3>
+              <p>Maîtrise des langages clés pour le développement web et la gestion de données.</p>
             </div>
-
             <div>
               <div class="date-text mb-2">Outils (VS Code, Figma)</div>
-              <h3 class="subtitle mb-2">Environnement de Développement & Design</h3>
-              <p>
-                Utilisation de Visual Studio Code pour le code et Figma pour la conception d'interfaces et de designs.
-              </p>
+              <h3 class="subtitle mb-2">Design & Dev</h3>
+              <p>Conception d'interfaces sur Figma et intégration propre sur VS Code.</p>
             </div>
           </div>
         </div>
-      </div>
-      
-      <div class="row mt-5">
         <div class="col-md-6 py-5">
-          <div class="bg-light-alt p-5 mt-5 rounded-4 overflow-hidden" data-aos="clip-top" data-aos-delay="1000">
+          <div class="bg-light-alt p-5 rounded-4" data-aos="clip-top" data-aos-delay="1000">
             <div class="content-title mb-4 fw-bold">Soft Skills</div>
-
             <div class="mb-5">
               <div class="date-text mb-2">Logique & Rigueur</div>
               <h3 class="subtitle mb-2">Pensée Structurée</h3>
-              <p>
-                Capacité à résoudre des problèmes (Résolution d'un problématique club de sports de Cotonou) et à produire un code fiable.
-              </p>
+              <p>Capacité à résoudre des problèmes complexes et à produire un code fiable.</p>
             </div>
-
             <div>
               <div class="date-text mb-2">Gestion & Esprit d'équipe</div>
-              <h3 class="subtitle mb-2">Collaboration et Organisation</h3>
-              <p>
-                Gestion du temps, esprit d'équipe (Participation à Discovery Epitech), essentiel pour les projets complexes.
-              </p>
+              <h3 class="subtitle mb-2">Collaboration</h3>
+              <p>Esprit d'équipe (Discovery Epitech) et gestion rigoureuse du temps.</p>
             </div>
           </div>
         </div>
-        <div class="col-md-6"></div>
       </div>
     </div>
   </section>
@@ -201,161 +201,94 @@
   <hr>
 
   <section class="py-5 my-5 position-relative overflow-hidden" id="experiences">
-    <div class="container position-relative h-100">
-      <div class="position-absolute top-0 start-100 translate-middle-x">
+    <div class="container position-relative">
+      <div class="position-absolute top-0 start-50 translate-middle-x text-center w-100">
         <div class="syne-font section-title" data-aos="fade-up">Expériences</div>
-        <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="200">Projets</div>
+        <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="200">Parcours</div>
         <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="400">Freelance</div>
       </div>
 
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 py-5">
-
-            <div class="bg-light-alt p-5 mt-5 rounded-4 overflow-hidden" data-aos="clip-top" data-aos-delay="1000">
-              <div class="content-title mb-4 fw-bold">Expériences Professionnelles & Projets</div>
-
-              <div class="mb-5">
+      <div class="row mt-5 pt-5">
+        <div class="col-md-12 py-5">
+          <div class="bg-light-alt p-5 rounded-4 overflow-hidden" data-aos="clip-top" data-aos-delay="1000">
+            <div class="content-title mb-4 fw-bold">Expériences Professionnelles & Projets</div>
+            <div class="row">
+              <div class="col-md-4 mb-4">
                 <div class="date-text mb-2">Depuis Avril 2023</div>
-                <h3 class="subtitle mb-2">Freelancer - Création et Gestion</h3>
-                <p>
-                  Création de Sites Web et de designs Figma. Gestion des commandes et du service clients. (A mon propre compte)
-                </p>
+                <h3 class="subtitle mb-2">Freelancer</h3>
+                <p>Création de Sites Web et de designs Figma. Gestion de projet en autonomie.</p>
               </div>
-
-              <div class="mb-5">
+              <div class="col-md-4 mb-4">
                 <div class="date-text mb-2">Janvier 2025</div>
-                <h3 class="subtitle mb-2">Discovery (Epitech) - IA de Gestion</h3>
-                <p>
-                  Participation à la création d'une **IA de gestion des réservations** et résolution de problématiques pour des clubs de sports.
-                </p>
+                <h3 class="subtitle mb-2">Discovery (Epitech)</h3>
+                <p>Création d'une IA de gestion des réservations et résolution de problématiques tech.</p>
               </div>
-              
-              <div class="mb-5">
+              <div class="col-md-4 mb-4">
                 <div class="date-text mb-2">2024</div>
-                <h3 class="subtitle mb-2">Agent Marketing (LG Service)</h3>
-                <p>
-                  Participation à la campagne MTN Hype. Expérience en Agents Working Bord.
-                </p>
+                <h3 class="subtitle mb-2">Agent Marketing (LG)</h3>
+                <p>Participation à la campagne MTN Hype. Expérience terrain et service client.</p>
               </div>
             </div>
-
           </div>
-          <div class="col-md-6"></div>
         </div>
       </div>
-
     </div>
   </section>
 
   <hr>
 
   <section class="py-5 my-5 position-relative overflow-hidden" id="projets">
-    <div class="container position-relative h-100">
-      <div class="position-absolute top-0 start-50 translate-middle-x">
+    <div class="container position-relative">
+      <div class="position-absolute top-0 start-50 translate-middle-x text-center w-100">
         <div class="syne-font section-title" data-aos="fade-up">Projets</div>
         <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="200">GitHub</div>
-        <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="400">Démos</div>
+        <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="400">Portfolio</div>
       </div>
 
-      <div class="row pt-5">
+      <div class="row mt-5 pt-5">
         <div class="col-md-12 py-5">
-          <div class="bg-light-alt p-5 mt-5 rounded-4 overflow-hidden" data-aos="clip-top" data-aos-delay="1000">
-            <div class="content-title mb-4 fw-bold">Mes Réalisations Techniques</div>
-            <p class="mb-5">
-              Voici quelques-unes de mes créations, du développement Full Stack à la conception design. Consultez les démonstrations et les dépôts GitHub pour visualiser la concrétisation des projets.
-            </p>
+          <div class="bg-light-alt p-5 rounded-4 overflow-hidden" data-aos="clip-top" data-aos-delay="1000">
+            <div class="content-title mb-4 fw-bold">Mes Réalisations Tech'</div>
             
+            <div class="mb-5 border-bottom pb-4">
+              <div class="date-text mb-2">Projet Front-end / Gastronomie</div>
+              <h3 class="subtitle mb-2">Resto</h3>
+              <p>Interface de restauration moderne. Focus sur l'esthétique et la navigation intuitive pour séduire les gourmets.</p>
+              <div class="d-flex gap-3 mt-3">
+                <a href="https://github.com/cedricapl/Resto" target="_blank" class="btn btn-custom btn-sm">GitHub <i class="fab fa-github"></i></a>
+                <a href="https://cedricapl.github.io/Resto/" target="_blank" class="btn btn-outline-dark btn-sm">Démo <i class="fas fa-external-link-alt"></i></a>
+              </div>
+            </div>
+
             <div class="mb-5 border-bottom pb-4">
               <div class="date-text mb-2">Projet Front-end/Design</div>
               <h3 class="subtitle mb-2">Nova (Banque)</h3>
-              <p>
-                **Site pour une banque.** Conception et développement d'une interface sécurisée et professionnelle pour un service bancaire. Focus sur l'UX/UI et la crédibilité numérique.
-              </p>
+              <p>Banque en ligne. Interface sécurisée et professionnelle. Focus sur l'UX/UI financier.</p>
               <div class="d-flex gap-3 mt-3">
-                <a href="https://github.com/cedricapl/Nova" target="_blank" class="btn btn-custom d-flex align-items-center gap-2 btn-sm">
-                  <span>Voir sur GitHub</span>
-                  <i class="fab fa-github"></i>
-                </a>
-                <a href="https://cedricapl.github.io/Nova/" target="_blank" class="btn btn-outline-dark d-flex align-items-center gap-2 btn-sm">
-                  <span>Voir la Démo</span>
-                  <i class="fas fa-external-link-alt"></i>
-                </a>
+                <a href="https://github.com/cedricapl/Nova" target="_blank" class="btn btn-custom btn-sm">GitHub <i class="fab fa-github"></i></a>
+                <a href="https://cedricapl.github.io/Nova/" target="_blank" class="btn btn-outline-dark btn-sm">Démo <i class="fas fa-external-link-alt"></i></a>
               </div>
             </div>
             
             <div class="mb-5 border-bottom pb-4">
-              <div class="date-text mb-2">Formation en ligne (Full Stack)</div>
-              <h3 class="subtitle mb-2">LearnG</h3>
-              <p>
-                **Site de formation en ligne.** Plateforme d'apprentissage e-learning. Ce projet démontre ma capacité à créer des solutions éducatives interactives et complètes.
-              </p>
+              <div class="date-text mb-2">E-learning (Full Stack)</div>
+              <h3 class="subtitle mb-2">LeanGo / LearnG</h3>
+              <p>Plateformes d'apprentissage interactives démontrant ma polyvalence éducative.</p>
               <div class="d-flex gap-3 mt-3">
-                <a href="https://github.com/cedricapl/LearnG" target="_blank" class="btn btn-custom d-flex align-items-center gap-2 btn-sm">
-                  <span>Voir sur GitHub</span>
-                  <i class="fab fa-github"></i>
-                </a>
-                <a href="#" target="_blank" class="btn btn-outline-dark d-flex align-items-center gap-2 btn-sm disabled">
-                  <span>Voir la Démo (Pas encore disponible)</span>
-                  <i class="fas fa-external-link-alt"></i>
-                </a>
-              </div>
-            </div>
-            
-            <div class="mb-5 border-bottom pb-4">
-              <div class="date-text mb-2">Site de formation en ligne</div>
-              <h3 class="subtitle mb-2">LeanGo</h3>
-              <p>
-                **Site de formation en ligne.** Une autre plateforme pour illustrer ma polyvalence dans l'architecture et le design des solutions e-learning.
-              </p>
-              <div class="d-flex gap-3 mt-3">
-                <a href="https://github.com/cedricapl/LeanGo" target="_blank" class="btn btn-custom d-flex align-items-center gap-2 btn-sm">
-                  <span>Voir sur GitHub</span>
-                  <i class="fab fa-github"></i>
-                </a>
-                <a href="https://cedricapl.github.io/LeanGo/" target="_blank" class="btn btn-outline-dark d-flex align-items-center gap-2 btn-sm">
-                  <span>Voir la Démo</span>
-                  <i class="fas fa-external-link-alt"></i>
-                </a>
-              </div>
-            </div>
-            
-            <div class="mb-5 border-bottom pb-4">
-              <div class="date-text mb-2">Site E-commerce (Vente)</div>
-              <h3 class="subtitle mb-2">Bushop</h3>
-              <p>
-                **Vente de bûche de bois.** Plateforme de vente en ligne, illustrant la gestion de catalogue produits, le panier et le processus de commande complet (e-commerce).
-              </p>
-              <div class="d-flex gap-3 mt-3">
-                <a href="https://github.com/cedricapl/Bushop" target="_blank" class="btn btn-custom d-flex align-items-center gap-2 btn-sm">
-                  <span>Voir sur GitHub</span>
-                  <i class="fab fa-github"></i>
-                </a>
-                <a href="https://cedricapl.github.io/Bushop/" target="_blank" class="btn btn-outline-dark d-flex align-items-center gap-2 btn-sm">
-                  <span>Voir la Démo</span>
-                  <i class="fas fa-external-link-alt"></i>
-                </a>
+                <a href="https://github.com/cedricapl/LeanGo" target="_blank" class="btn btn-custom btn-sm">GitHub <i class="fab fa-github"></i></a>
+                <a href="https://cedricapl.github.io/LeanGo/" target="_blank" class="btn btn-outline-dark btn-sm">Démo <i class="fas fa-external-link-alt"></i></a>
               </div>
             </div>
             
             <div>
-              <div class="date-text mb-2">Site E-commerce (Vente)</div>
-              <h3 class="subtitle mb-2">Dshop</h3>
-              <p>
-                **Plateforme de vente en ligne.** Une autre réalisation e-commerce qui met en avant mes compétences en Front-end et en expérience utilisateur pour une boutique en ligne.
-              </p>
+              <div class="date-text mb-2">E-commerce</div>
+              <h3 class="subtitle mb-2">Bushop / Dshop</h3>
+              <p>Gestion de catalogue et panier complet pour boutiques en ligne.</p>
               <div class="d-flex gap-3 mt-3">
-                <a href="https://github.com/cedricapl/Dshop" target="_blank" class="btn btn-custom d-flex align-items-center gap-2 btn-sm">
-                  <span>Voir sur GitHub</span>
-                  <i class="fab fa-github"></i>
-                </a>
-                <a href="https://cedricapl.github.io/Dshop/" target="_blank" class="btn btn-outline-dark d-flex align-items-center gap-2 btn-sm">
-                  <span>Voir la Démo</span>
-                  <i class="fas fa-external-link-alt"></i>
-                </a>
+                <a href="https://github.com/cedricapl/Bushop" target="_blank" class="btn btn-custom btn-sm">GitHub <i class="fab fa-github"></i></a>
+                <a href="https://cedricapl.github.io/Bushop/" target="_blank" class="btn btn-outline-dark btn-sm">Démo <i class="fas fa-external-link-alt"></i></a>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -364,50 +297,28 @@
   
   <hr>
 
-  <section class="py-5 my-5 position-relative overflow-hidden">
+  <section class="py-5 my-5 position-relative overflow-hidden" id="formation">
     <div class="container">
-      <div class="position-absolute top-0 start-50 translate-middle-x">
+      <div class="position-absolute top-0 start-50 translate-middle-x text-center w-100">
         <div class="syne-font section-title" data-aos="fade-up">Formation</div>
-        <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="200">Tech</div>
-        <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="400">Gestion</div>
+        <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="200">Diplômes</div>
+        <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="400">Cursus</div>
       </div>
 
-      <div class="row">
-        <div class="col-md-6"></div>
-        <div class="col-md-6 py-5">
+      <div class="row mt-5 pt-5">
+        <div class="col-md-12 py-5">
           <div class="bg-light-alt p-5 rounded-4" data-aos="clip-bottom" data-aos-duration="1000">
-            <div class="content-title mb-4 fw-bold">Parcours Académique & Certifications</div>
-
-            <div class="mb-5">
-              <div class="date-text mb-2">2024 - 2025</div>
-              <h3 class="subtitle mb-2">Développement Back-end (Sollearn)</h3>
-              <p>
-                Formation approfondie en développement Back-end.
-              </p>
-            </div>
-            
-            <div class="mb-5">
-              <div class="date-text mb-2">2022 - 2024</div>
-              <h3 class="subtitle mb-2">Développement Front-end (Sollearn)</h3>
-              <p>
-                Formation e-learning complète sur les technologies Front-end.
-              </p>
-            </div>
-
-            <div class="mb-5">
-              <div class="date-text mb-2">2024 - 2025</div>
-              <h3 class="subtitle mb-2">Deuxième année de Science gestion (UAC-FASEG)</h3>
-              <p>
-                Double cursus apportant une base solide en gestion et finance.
-              </p>
-            </div>
-            
-            <div>
-              <div class="date-text mb-2">2024</div>
-              <h3 class="subtitle mb-2">Découvre talent numérique - DTN (TITA) & Microsoft 360 (Coursera)</h3>
-              <p>
-                Certifications en compétences numériques (DTN) et maîtrise des outils Microsoft 360.
-              </p>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="date-text mb-2">2024 - 2025</div>
+                    <h3 class="subtitle mb-2">Back-end & Science de Gestion</h3>
+                    <p>Sollearn & UAC-FASEG (L2). Alliance tech et business.</p>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="date-text mb-2">2022 - 2024</div>
+                    <h3 class="subtitle mb-2">Front-end (Sollearn)</h3>
+                    <p>Spécialisation dans les technologies web modernes.</p>
+                </div>
             </div>
           </div>
         </div>
@@ -417,37 +328,27 @@
 
   <hr>
   
-  <section class="py-5 my-5 position-relative">
-    <div class="container overflow-hidden">
-      <div class="position-absolute top-0 start-50 translate-middle-x">
+  <section class="py-5 my-5 position-relative overflow-hidden" id="interets">
+    <div class="container">
+      <div class="position-absolute top-0 start-50 translate-middle-x text-center w-100">
         <div class="syne-font section-title" data-aos="fade-up">Intérêts</div>
         <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="200">Gaming</div>
         <div class="syne-font section-title section-title-bg" data-aos="fade-up" data-aos-delay="400">Sport</div>
       </div>
 
-      <div class="row">
+      <div class="row mt-5 pt-5">
         <div class="col-md-6 py-5">
           <div class="bg-light-alt p-5 rounded-4" data-aos="clip-bottom" data-aos-duration="1000">
-            <div class="content-title mb-4 fw-bold">Centres d'Intérêt</div>
-
-            <div class="mb-5">
-              <div class="date-text mb-2">Gaming & Logique</div>
-              <h3 class="subtitle mb-2">Développement de l'Esprit Logique</h3>
-              <p>
-                Le Gaming, au-delà du loisir, renforce la capacité à résoudre des problèmes complexes sous pression, un atout pour le codage. L'aspect stratégique et la résolution de problèmes complexes sont directement transférables au développement.
-              </p>
-            </div>
-
-            <div>
-              <div class="date-text mb-2">Sport & Cuisine</div>
-              <h3 class="subtitle mb-2">Équilibre et Rigueur</h3>
-              <p>
-                La pratique du Sport apporte discipline et l'organisation (Cuisine), essentielle pour une bonne hygiène de vie et la gestion des projets.
-              </p>
-            </div>
+            <div class="content-title mb-4 fw-bold">Gaming & Logique</div>
+            <p>Le Gaming renforce la résolution de problèmes complexes sous pression. Farm l'XP pour devenir OP !</p>
           </div>
         </div>
-        <div class="col-md-6"></div>
+        <div class="col-md-6 py-5">
+          <div class="bg-light-alt p-5 rounded-4" data-aos="clip-top" data-aos-delay="1000">
+            <div class="content-title mb-4 fw-bold">Sport & Cuisine</div>
+            <p>Discipline, créativité et rigueur. Un bon codeur est un codeur bien nourri et en forme.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -457,11 +358,7 @@
       <div class="row align-items-center">
         <div class="col-md-6" data-aos="fade-right">
           <h2 class="content-title mb-4 fw-bold">Laissez-moi un message</h2>
-          <p class="mb-4">
-            Pour toute proposition de collaboration, de stage ou simplement pour échanger sur un projet technique. Je suis disponible pour relever de nouveaux défis Full Stack.
-          </p>
-          <p class="text-dark fst-italic fs-5">Email: <a href="mailto:cedricaplogan123@gmail.com"
-              class="text-dark text-decoration-none fw-bold">cedricaplogan123@gmail.com</a></p>
+          <p class="text-dark fst-italic fs-5">Email: <a href="mailto:cedricaplogan123@gmail.com" class="text-dark text-decoration-none fw-bold">cedricaplogan123@gmail.com</a></p>
           <p class="text-dark fst-italic fs-5">Tél: 01 59 94 58 90</p>
         </div>
 
@@ -481,55 +378,23 @@
   </section>
   
   <footer class="py-5 bg-dark-custom rounded-4 m-3 m-lg-4">
-    <div class="container">
-      <div class="row mb-5">
-        <div class="col-md-3">
-          <div class="text-light-custom content-title fw-bold">Cédric Aplogan</div>
-          <p class="text-light-custom mb-4">
-            Développeur Full Stack | Front-end, Back-end & Logique.
-          </p>
-          <div class="d-flex flex-wrap gap-3">
-            <a href="https://www.linkedin.com/in/c%C3%A9dricaplogan-webdeveloppeur?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fab fa-linkedin social-icon text-light-custom"></i></a>
-            </div>
+    <div class="container text-center">
+        <div class="text-light-custom content-title fw-bold">Cédric Aplogan</div>
+        <p class="text-light-custom mb-4">Développeur Full Stack | Front-end, Back-end & Logique.</p>
+        <div class="d-flex justify-content-center gap-3 mb-4">
+            <a href="https://www.linkedin.com/in/c%C3%A9dricaplogan-webdeveloppeur" target="_blank"><i class="fab fa-linkedin social-icon text-light-custom fs-3"></i></a>
         </div>
-
-        <div class="col-md-2">
-          <ul class="list-unstyled">
-            <li class="mb-2"><a href="#home" class="footer-link text-yellow">Accueil</a></li>
-            <li class="mb-2"><a href="#about" class="footer-link">À Propos</a></li>
-            <li class="mb-2"><a href="#competences" class="footer-link">Compétences</a></li>
-            <li class="mb-2"><a href="#experiences" class="footer-link">Expériences</a></li>
-            <li class="mb-2"><a href="#projets" class="footer-link">Projets</a></li>
-          </ul>
-        </div>
-
-        <div class="col-md-2">
-          <ul class="list-unstyled">
-            <li class="mb-2"><a href="#contact" class="footer-link">Contact</a></li>
-            </ul>
-        </div>
-
-        <div class="col-md-5">
-          <p class="text-light-custom mb-4">
-            "Chaque problème a une solution élégante. Mon travail est de la coder."
-          </p>
-          <p class="text-light-custom fst-italic fs-5"><a href="mailto:cedricaplogan123@gmail.com"
-              class="text-light-custom text-decoration-none">cedricaplogan123@gmail.com</a></p>
-        </div>
-      </div>
-
-      <div class="border-top border-light pt-4">
-        <p class="text-light-custom text-center">
-          ©2025 Cédric Aplogan - CV Développeur.
-        </p>
-      </div>
+        <p class="text-light-custom">©2025 Cédric Aplogan - CV Développeur.</p>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
   <script src="jquery-1.11.0.min.js"></script>
   <script src="plugins.js"></script>
   <script src="script.js"></script>
 </body>
-
 </html>
