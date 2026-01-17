@@ -22,6 +22,29 @@
     .container, .container-fluid {
       overflow: hidden; /* Empêche les titres de bg de faire déborder la page */
     }
+
+    /* Animation Play Stylée pour les boutons Démo */
+    .btn-play-animated {
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 45px;
+    }
+    .btn-play-animated i {
+      animation: pulse-play 1.5s infinite;
+      font-size: 0.9rem;
+    }
+    @keyframes pulse-play {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+      100% { transform: scale(1); }
+    }
+    .btn-play-animated:hover {
+      background-color: #212529 !important;
+      color: white !important;
+      transform: scale(1.1);
+    }
   </style>
 </head>
 
@@ -256,7 +279,9 @@
               <p>Interface de restauration moderne. Focus sur l'esthétique et la navigation intuitive pour séduire les gourmets.</p>
               <div class="d-flex gap-3 mt-3">
                 <a href="https://github.com/cedricapl/Resto" target="_blank" class="btn btn-custom btn-sm">GitHub <i class="fab fa-github"></i></a>
-                <a href="https://cedricapl.github.io/Resto/" target="_blank" class="btn btn-outline-dark btn-sm">Démo <i class="fas fa-external-link-alt"></i></a>
+                <a href="https://cedricapl.github.io/Resto/" target="_blank" class="btn btn-outline-dark btn-sm btn-play-animated">
+                  <i class="fas fa-play"></i>
+                </a>
               </div>
             </div>
 
@@ -266,7 +291,9 @@
               <p>Banque en ligne. Interface sécurisée et professionnelle. Focus sur l'UX/UI financier.</p>
               <div class="d-flex gap-3 mt-3">
                 <a href="https://github.com/cedricapl/Nova" target="_blank" class="btn btn-custom btn-sm">GitHub <i class="fab fa-github"></i></a>
-                <a href="https://cedricapl.github.io/Nova/" target="_blank" class="btn btn-outline-dark btn-sm">Démo <i class="fas fa-external-link-alt"></i></a>
+                <a href="https://cedricapl.github.io/Nova/" target="_blank" class="btn btn-outline-dark btn-sm btn-play-animated">
+                  <i class="fas fa-play"></i>
+                </a>
               </div>
             </div>
             
@@ -276,7 +303,9 @@
               <p>Plateformes d'apprentissage interactives démontrant ma polyvalence éducative.</p>
               <div class="d-flex gap-3 mt-3">
                 <a href="https://github.com/cedricapl/LeanGo" target="_blank" class="btn btn-custom btn-sm">GitHub <i class="fab fa-github"></i></a>
-                <a href="https://cedricapl.github.io/LeanGo/" target="_blank" class="btn btn-outline-dark btn-sm">Démo <i class="fas fa-external-link-alt"></i></a>
+                <a href="https://cedricapl.github.io/LeanGo/" target="_blank" class="btn btn-outline-dark btn-sm btn-play-animated">
+                  <i class="fas fa-play"></i>
+                </a>
               </div>
             </div>
             
@@ -286,7 +315,9 @@
               <p>Gestion de catalogue et panier complet pour boutiques en ligne.</p>
               <div class="d-flex gap-3 mt-3">
                 <a href="https://github.com/cedricapl/Bushop" target="_blank" class="btn btn-custom btn-sm">GitHub <i class="fab fa-github"></i></a>
-                <a href="https://cedricapl.github.io/Bushop/" target="_blank" class="btn btn-outline-dark btn-sm">Démo <i class="fas fa-external-link-alt"></i></a>
+                <a href="https://cedricapl.github.io/Bushop/" target="_blank" class="btn btn-outline-dark btn-sm btn-play-animated">
+                  <i class="fas fa-play"></i>
+                </a>
               </div>
             </div>
           </div>
