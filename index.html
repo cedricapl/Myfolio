@@ -149,6 +149,8 @@ body.cs-click #cs-ring{transform:translate(-50%,-50%) scale(1.3);}
 #preloader.exit{animation:pexit .9s cubic-bezier(.87,0,.13,1) forwards;}
 @keyframes pexit{0%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 100% 0)}}
 @keyframes fup{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes twinkle{0%,100%{opacity:.2;transform:scale(1)}50%{opacity:.9;transform:scale(1.8)}}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 /* ═══════════════════════════════════════════════
    GLOBAL
@@ -303,17 +305,17 @@ nav.on{opacity:1;transform:translateY(0);}
 .h-img-wrap{
   display:flex;justify-content:center;align-items:center;
   position:relative;flex-shrink:0;
-  opacity:0;animation:fup 1s .32s ease forwards;
+  opacity:0;
 }
+.h-img-wrap.ready{animation:fup .5s ease forwards;}
 .h-img-frame{
   position:relative;
   width:clamp(170px,19vw,300px);height:clamp(220px,25vw,400px);
   max-width:calc(45vw - 40px);flex-shrink:0;
 }
-/* Animated conic border */
-@property --deg{syntax:'<angle>';initial-value:0deg;inherits:false;}
+@property --deg{syntax:"<angle>";initial-value:0deg;inherits:false;}
 .h-img-frame::before{
-  content:'';position:absolute;inset:-2px;border-radius:16px;z-index:0;
+  content:"";position:absolute;inset:-2px;border-radius:16px;z-index:0;
   background:conic-gradient(from var(--deg),var(--blue) 0%,var(--cyan) 25%,transparent 50%,var(--blue) 100%);
   animation:cdeg 4s linear infinite;
 }
@@ -324,9 +326,9 @@ nav.on{opacity:1;transform:translateY(0);}
 }
 .h-img-in img{
   width:100%;height:100%;object-fit:cover;object-position:top center;
-  filter:grayscale(.15);transition:filter .7s,transform .7s;display:block;
+  transition:transform .6s;display:block;
 }
-.h-img-in:hover img{filter:grayscale(0);transform:scale(1.05);}
+.h-img-in:hover img{transform:scale(1.04);}
 /* Floating badge */
 .h-badge{
   position:absolute;bottom:-14px;left:-20px;z-index:5;
@@ -384,141 +386,392 @@ nav.on{opacity:1;transform:translateY(0);}
 .sec-title .o{display:block;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.13);}
 
 /* ═══════════════════════════════════════════════
-   PROJECTS — MAXIMUM HOVER CARDS
+   PROJECTS — AWWWARDS SOTD LEVEL
+   Concept: Accordion cinématique plein écran.
+   Chaque projet = un panneau qui se dilate,
+   révélant un monde visuel unique au survol.
+   Sur mobile : cartes empilées avec scroll snap.
 ═══════════════════════════════════════════════ */
-#projects{padding:130px 5vw;background:var(--bg2);}
-.proj-hd{max-width:1400px;margin:0 auto 72px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;}
+#projects{padding:130px 0 0;background:var(--bg2);overflow:hidden;}
+.proj-hd{max-width:1400px;margin:0 auto 60px;padding:0 5vw;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;}
 .proj-count{font-family:var(--mono);font-size:.62rem;color:var(--muted);letter-spacing:.2em;line-height:2;text-align:right;}
-.proj-grid{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3px;}
 
-/* ─── Card base ─── */
-.pc{
-  display:block;text-decoration:none;color:var(--text);
-  background:var(--surf);overflow:hidden;cursor:none;
+/* ── Accordion wrapper ── */
+.proj-accordion{
+  display:flex;
+  height:clamp(420px,55vh,700px);
+  width:100%;
+  overflow:hidden;
+}
+
+/* ── Panel ── */
+.pa{
   position:relative;
-  /* 3D perspective for tilt */
-  transform-style:preserve-3d;
-  transition:transform .6s cubic-bezier(.16,1,.3,1),box-shadow .6s;
+  flex:1;
+  overflow:hidden;
+  cursor:none;
+  text-decoration:none;
+  color:var(--text);
+  transition:flex .8s cubic-bezier(.77,0,.18,1);
+  /* Separator */
+  border-right:1px solid rgba(255,255,255,.04);
 }
-.pc:nth-child(1){border-radius:14px 0 0 0;}
-.pc:nth-child(2){border-radius:0 14px 0 0;}
-.pc:nth-child(3){border-radius:0 0 0 14px;}
-.pc:nth-child(4){border-radius:0 0 14px 0;}
-/* Glow border on hover */
-.pc::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(14,95,252,.08),transparent,rgba(0,229,255,.05));
-  opacity:0;transition:opacity .5s;z-index:1;pointer-events:none;
-  border-radius:inherit;
+.pa:last-child{border-right:none;}
+.proj-accordion:has(.pa:hover) .pa{flex:.35;}
+.proj-accordion:has(.pa:hover) .pa:hover{flex:3.8;}
+
+/* ── Full-bleed scene ── */
+.pa-scene{
+  position:absolute;inset:0;
+  overflow:hidden;
 }
-.pc:hover{box-shadow:0 40px 120px rgba(14,95,252,.18),inset 0 1px 0 rgba(255,255,255,.06);}
-.pc:hover::after{opacity:1;}
 
-/* Project visual area */
-.pv{aspect-ratio:16/9;position:relative;overflow:hidden;}
-
-/* ── NOVA visual ── */
-.vn{background:#040410;display:flex;align-items:center;justify-content:center;position:relative;}
-.vn::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(14,95,252,.28) 0%,transparent 55%),radial-gradient(circle at 70% 50%,rgba(139,92,246,.18) 0%,transparent 55%);}
-.vn-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(14,95,252,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(14,95,252,.06) 1px,transparent 1px);background-size:28px 28px;animation:vngrid 20s linear infinite;}
-@keyframes vngrid{to{background-position:28px 28px}}
-.nr{position:absolute;border-radius:50%;border:1px solid rgba(14,95,252,.18);display:flex;align-items:center;justify-content:center;}
-.nr:nth-child(1){width:90px;height:90px;border-color:rgba(14,95,252,.5);animation:spin 7s linear infinite;}
-.nr:nth-child(2){width:160px;height:160px;animation:spin 13s linear infinite reverse;}
-.nr:nth-child(3){width:230px;height:230px;border-color:rgba(139,92,246,.2);animation:spin 21s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
-.vn-core{position:relative;z-index:1;font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-.05em;text-transform:uppercase;background:linear-gradient(135deg,#fff 0%,#a78bfa 40%,var(--blue) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-/* Hover: core pulses */
-.pc:hover .vn-core{animation:novaP .6s ease-in-out;}
-@keyframes novaP{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
-
-/* ── RICKO visual ── */
-.vr{background:linear-gradient(160deg,#120800,#200d00);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.vr-glow{position:absolute;width:300px;height:300px;background:radial-gradient(circle,rgba(251,146,60,.22),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);animation:rglow 2s ease-in-out infinite;}
-@keyframes rglow{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.2)}}
-.vr-lines{position:absolute;inset:0;}
-.vr-line{position:absolute;left:0;right:0;height:1px;background:rgba(251,146,60,.05);}
-.vr-content{position:relative;z-index:1;text-align:center;}
-.vr-emoji{font-size:2.8rem;display:block;animation:sway 2.2s ease-in-out infinite;}
-@keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
-.vr-name{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;letter-spacing:.1em;text-transform:uppercase;color:#fb923c;text-shadow:0 0 40px rgba(251,146,60,.6);margin-top:10px;}
-.vr-sub{font-family:var(--mono);font-size:.58rem;color:rgba(251,146,60,.4);letter-spacing:.4em;margin-top:4px;}
-.pc:hover .vr-emoji{animation-duration:1s;}
-
-/* ── RESTO visual ── */
-.vres{background:#080808;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.vres-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:32px 32px;}
-.rcds{position:relative;z-index:1;display:flex;gap:12px;align-items:flex-end;}
-.rcd{
-  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
-  border-radius:12px;padding:16px 14px;text-align:center;min-width:72px;
-  transition:transform .5s cubic-bezier(.16,1,.3,1),border-color .4s,box-shadow .4s;
-}
-.pc:hover .rcd:nth-child(1){transform:translateY(-14px);border-color:rgba(255,255,255,.14);box-shadow:0 12px 40px rgba(0,0,0,.6);}
-.pc:hover .rcd:nth-child(2){transform:translateY(-22px);border-color:rgba(255,255,255,.2);box-shadow:0 16px 50px rgba(0,0,0,.7);}
-.pc:hover .rcd:nth-child(3){transform:translateY(-14px);border-color:rgba(255,255,255,.14);box-shadow:0 12px 40px rgba(0,0,0,.6);}
-.rce{font-size:1.8rem;display:block;}
-.rcl{font-family:var(--mono);font-size:.53rem;color:var(--muted);letter-spacing:.08em;margin-top:6px;}
-
-/* ── PROXIMY visual ── */
-.vp{background:linear-gradient(135deg,#030912,#071124);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.vp-pts{position:absolute;inset:0;overflow:hidden;}
-.vp-pt{position:absolute;width:2px;height:2px;background:var(--blue);border-radius:50%;animation:ptrise linear infinite;}
-@keyframes ptrise{from{transform:translateY(110%);opacity:0}10%{opacity:.9}90%{opacity:.6}to{transform:translateY(-10%);opacity:0}}
-.vp-card{
-  position:relative;z-index:1;
-  background:rgba(255,255,255,.04);border:1px solid rgba(14,95,252,.22);
-  border-radius:14px;padding:20px;width:190px;backdrop-filter:blur(12px);
-  transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s;
-}
-.pc:hover .vp-card{transform:translateY(-6px);box-shadow:0 24px 80px rgba(14,95,252,.2);}
-.vp-price{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;margin-bottom:12px;}
-.vp-bar{height:3px;background:rgba(255,255,255,.06);border-radius:2px;margin:6px 0;overflow:hidden;}
-.vp-bar span{display:block;height:100%;border-radius:2px;}
-.vp-bar.b8 span{width:80%;background:linear-gradient(90deg,var(--blue),var(--cyan));}
-.vp-bar.b6 span{width:60%;background:rgba(14,95,252,.45);}
-.vp-pills{display:flex;gap:4px;flex-wrap:wrap;margin-top:12px;}
-.vp-pill{font-family:var(--mono);font-size:.53rem;color:var(--blue);border:1px solid rgba(14,95,252,.3);border-radius:2px;padding:2px 8px;}
-
-/* ─── Card hover overlay — full-bleed reveal ─── */
-.p-overlay{
+/* ── Collapsed state overlay — shows index + name vertically ── */
+.pa-collapsed{
   position:absolute;inset:0;z-index:10;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;
+  background:linear-gradient(to top,rgba(7,9,15,.85) 0%,rgba(7,9,15,.3) 100%);
+  transition:opacity .5s;
+}
+.proj-accordion:has(.pa:hover) .pa:not(:hover) .pa-collapsed{opacity:1;}
+.proj-accordion .pa:hover .pa-collapsed{opacity:0;pointer-events:none;}
+.pa-idx{
+  font-family:var(--mono);font-size:.58rem;color:var(--muted);
+  letter-spacing:.3em;text-transform:uppercase;
+  writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);
+}
+.pa-title-v{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(.9rem,1.4vw,1.4rem);
+  text-transform:uppercase;letter-spacing:.05em;
+  writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);
+  white-space:nowrap;
+}
+
+/* ── Expanded state content ── */
+.pa-content{
+  position:absolute;inset:0;z-index:15;
   display:flex;flex-direction:column;justify-content:flex-end;
-  padding:28px;
-  background:linear-gradient(to top,rgba(7,9,15,.95) 0%,rgba(7,9,15,.4) 50%,transparent 100%);
-  opacity:0;transition:opacity .4s;
+  padding:clamp(24px,3vw,48px);
+  background:linear-gradient(to top,rgba(7,9,15,.97) 0%,rgba(7,9,15,.5) 40%,transparent 70%);
+  opacity:0;transform:translateY(12px);
+  transition:opacity .5s .15s,transform .5s .15s;
   pointer-events:none;
 }
-.pc:hover .p-overlay{opacity:1;pointer-events:auto;}
-.p-view-btn{
-  display:inline-flex;align-items:center;gap:8px;
+.pa:hover .pa-content{opacity:1;transform:translateY(0);pointer-events:auto;}
+
+.pa-eyebrow{
+  font-family:var(--mono);font-size:.56rem;color:var(--cyan);
+  letter-spacing:.3em;text-transform:uppercase;margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.pa-eyebrow::before{content:'';width:16px;height:1px;background:var(--cyan);}
+
+.pa-name{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(1.8rem,3.5vw,4rem);
+  letter-spacing:-.04em;text-transform:uppercase;
+  line-height:.9;margin-bottom:14px;
+}
+.pa-desc{
+  font-size:.85rem;color:rgba(237,242,255,.65);
+  line-height:1.65;max-width:360px;margin-bottom:18px;
+}
+.pa-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
+.pa-tag{
+  font-family:var(--mono);font-size:.52rem;
+  color:var(--muted);border:1px solid rgba(255,255,255,.1);
+  border-radius:2px;padding:3px 9px;
+  transition:color .3s,border-color .3s;
+}
+.pa:hover .pa-tag{color:var(--cyan);border-color:rgba(0,229,255,.3);}
+
+.pa-cta{
+  display:inline-flex;align-items:center;gap:10px;
   background:var(--text);color:var(--bg);
-  font-family:var(--mono);font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  padding:10px 20px;border-radius:2px;
-  transform:translateY(16px);transition:transform .4s .06s cubic-bezier(.16,1,.3,1);
+  font-family:var(--mono);font-size:.65rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:11px 22px;border-radius:2px;
   width:fit-content;
+  transform:translateY(8px);opacity:0;
+  transition:transform .45s .25s,opacity .45s .25s,box-shadow .3s;
 }
-.pc:hover .p-view-btn{transform:translateY(0);}
-.p-corner{
-  position:absolute;width:28px;height:28px;border-style:solid;border-color:var(--cyan);
-  transition:opacity .4s,transform .4s;opacity:0;
+.pa:hover .pa-cta{transform:translateY(0);opacity:1;}
+.pa-cta:hover{box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.pa-cta svg{transition:transform .3s;}
+.pa-cta:hover svg{transform:translateX(4px);}
+
+/* ══════════════════════════════════════════
+   SCENE 01 — NOVA: Synthwave cosmos
+   Deep space, neon grid horizon, satellite
+══════════════════════════════════════════ */
+.sn{
+  width:100%;height:100%;position:relative;
+  background:radial-gradient(ellipse at 50% 80%,#1a0050 0%,#04020f 60%);
+  overflow:hidden;
 }
-.p-corner.tl{top:16px;left:16px;border-width:1px 0 0 1px;transform:translate(-6px,-6px);}
-.p-corner.br{bottom:16px;right:16px;border-width:0 1px 1px 0;transform:translate(6px,6px);}
-.pc:hover .p-corner{opacity:1;transform:translate(0,0);}
-/* Card info */
-.pi{padding:20px 24px 24px;border-top:1px solid var(--border);}
-.pi-idx{font-family:var(--mono);font-size:.56rem;color:var(--blue);letter-spacing:.2em;display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-.pi-idx::after{content:'';flex:1;height:1px;background:rgba(14,95,252,.2);}
-.pi-name{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:6px;}
-.pi-desc{font-size:.82rem;color:var(--muted);line-height:1.65;margin-bottom:14px;}
-.pi-tags{display:flex;gap:6px;flex-wrap:wrap;}
-.pi-tag{
-  font-family:var(--mono);font-size:.54rem;color:var(--muted);
-  border:1px solid var(--border);border-radius:2px;padding:3px 9px;
-  transition:border-color .3s,color .3s,background .3s;
+/* Stars */
+.sn-stars{position:absolute;inset:0;}
+/* Horizon grid */
+.sn-grid{
+  position:absolute;bottom:-10%;left:-20%;right:-20%;
+  height:70%;
+  background-image:
+    linear-gradient(rgba(139,92,246,.3) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(139,92,246,.3) 1px,transparent 1px);
+  background-size:80px 80px;
+  transform:perspective(500px) rotateX(65deg);
+  transform-origin:bottom center;
+  animation:gridpulse 4s ease-in-out infinite;
 }
-.pc:hover .pi-tag{border-color:rgba(14,95,252,.4);color:var(--blue);background:rgba(14,95,252,.06);}
+@keyframes gridpulse{
+  0%,100%{opacity:.7}
+  50%{opacity:1}
+}
+/* Horizon glow line */
+.sn-horizon{
+  position:absolute;bottom:30%;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,#a855f7 20%,var(--cyan) 50%,#a855f7 80%,transparent);
+  filter:blur(1px);
+  box-shadow:0 0 20px var(--cyan),0 0 60px rgba(168,85,247,.5);
+  animation:hpulse 3s ease-in-out infinite;
+}
+@keyframes hpulse{0%,100%{opacity:.8}50%{opacity:1}}
+/* Sun/planet */
+.sn-sun{
+  position:absolute;bottom:28%;left:50%;transform:translateX(-50%);
+  width:clamp(60px,8vw,120px);height:clamp(60px,8vw,120px);border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#e879f9,#a855f7 40%,#4f46e5 70%,#1e1b4b);
+  box-shadow:0 0 40px rgba(168,85,247,.6),0 0 100px rgba(168,85,247,.3);
+  animation:sunrot 20s linear infinite;
+}
+@keyframes sunrot{to{box-shadow:0 0 60px rgba(0,229,255,.6),0 0 120px rgba(0,229,255,.3)}}
+/* Flying text */
+.sn-title{
+  position:absolute;top:18%;left:50%;transform:translateX(-50%);
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(2.5rem,5vw,6rem);letter-spacing:-.04em;text-transform:uppercase;
+  white-space:nowrap;
+  background:linear-gradient(135deg,#fff,#c4b5fd 40%,var(--blue));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:float-title 5s ease-in-out infinite;
+}
+@keyframes float-title{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-12px)}}
+
+/* ══════════════════════════════════════════
+   SCENE 02 — CHEZ RICKO: Street food night
+   Warm neon lights, steam, bokeh city
+══════════════════════════════════════════ */
+.sr{
+  width:100%;height:100%;position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#0a0400 0%,#1f0900 50%,#0d0400 100%);
+}
+/* Bokeh lights */
+.sr-bokeh{position:absolute;inset:0;}
+.sr-bk{position:absolute;border-radius:50%;filter:blur(20px);animation:bkfloat ease-in-out infinite;}
+@keyframes bkfloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.1)}}
+/* Neon sign */
+.sr-neon{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);
+  text-align:center;z-index:2;
+}
+.sr-neon-text{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(1.5rem,3vw,3.5rem);
+  letter-spacing:.08em;text-transform:uppercase;
+  color:#fb923c;
+  text-shadow:
+    0 0 10px #fb923c,0 0 30px #fb923c,
+    0 0 60px rgba(251,146,60,.7),0 0 100px rgba(251,146,60,.4);
+  animation:neon-flicker 6s ease-in-out infinite;
+}
+@keyframes neon-flicker{
+  0%,88%,92%,96%,100%{opacity:1;text-shadow:0 0 10px #fb923c,0 0 30px #fb923c,0 0 60px rgba(251,146,60,.7)}
+  89%{opacity:.6;text-shadow:none}
+  91%{opacity:.8}
+  93%{opacity:.5;text-shadow:none}
+  97%{opacity:.9}
+}
+.sr-neon-sub{
+  font-family:var(--mono);font-size:.65rem;color:rgba(251,146,60,.5);
+  letter-spacing:.5em;text-transform:uppercase;margin-top:8px;
+}
+/* Steam particles */
+.sr-steam{position:absolute;bottom:0;left:0;right:0;height:40%;z-index:1;}
+.sr-st{position:absolute;bottom:0;width:3px;background:linear-gradient(to top,rgba(255,200,150,.15),transparent);border-radius:50%;animation:steam linear infinite;}
+@keyframes steam{from{transform:translateY(0) scaleX(1);opacity:.6}to{transform:translateY(-200px) scaleX(4);opacity:0}}
+/* Neon strips on ground */
+.sr-strip{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(251,146,60,.2),transparent);}
+
+/* ══════════════════════════════════════════
+   SCENE 03 — RESTO: Luxury tasting menu
+   Dark premium, floating dish reveals
+══════════════════════════════════════════ */
+.sre{
+  width:100%;height:100%;position:relative;overflow:hidden;
+  background:#050505;
+}
+/* Gold texture overlay */
+.sre-tex{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 30% 70%,rgba(251,191,36,.04) 0%,transparent 50%),
+    radial-gradient(ellipse at 70% 30%,rgba(251,191,36,.04) 0%,transparent 50%);
+}
+/* Thin gold lines */
+.sre-lines{position:absolute;inset:0;}
+.sre-line{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(251,191,36,.08),transparent);}
+/* Circular tasting plates */
+.sre-stage{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.sre-orbit{
+  position:relative;
+  width:clamp(200px,28vw,340px);height:clamp(200px,28vw,340px);
+}
+.sre-plate{
+  position:absolute;
+  background:radial-gradient(circle at 40% 35%,rgba(255,255,255,.08),rgba(255,255,255,.02));
+  border:1px solid rgba(251,191,36,.2);
+  border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;
+  transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s,border-color .5s;
+  box-shadow:0 0 30px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.06);
+}
+.sre-plate:nth-child(1){width:100px;height:100px;top:50%;left:50%;transform:translate(-50%,-50%);}
+.sre-plate:nth-child(2){width:72px;height:72px;top:8%;left:50%;transform:translateX(-50%);}
+.sre-plate:nth-child(3){width:72px;height:72px;bottom:8%;right:8%;}
+.sre-plate:nth-child(4){width:72px;height:72px;bottom:8%;left:8%;}
+.sre-pe{font-size:1.8rem;line-height:1;}
+.sre-plate:nth-child(1) .sre-pe{font-size:2.2rem;}
+.sre-pl{font-family:var(--mono);font-size:.48rem;color:rgba(251,191,36,.5);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;}
+/* Hover: orbit rotates, plates glow */
+.pa:hover .sre-orbit{animation:orbit-spin 8s linear infinite;}
+@keyframes orbit-spin{to{transform:rotate(360deg)}}
+.pa:hover .sre-plate{border-color:rgba(251,191,36,.4);box-shadow:0 0 30px rgba(0,0,0,.8),0 0 20px rgba(251,191,36,.1),inset 0 1px 0 rgba(255,255,255,.08);}
+/* Counter-rotate text so it stays upright */
+.pa:hover .sre-plate .sre-pe,.pa:hover .sre-plate .sre-pl{animation:counter-spin 8s linear infinite;}
+@keyframes counter-spin{to{transform:rotate(-360deg)}}
+/* Gold ring */
+.sre-ring{
+  position:absolute;inset:-16px;border-radius:50%;
+  border:1px solid rgba(251,191,36,.12);
+  animation:pulse-ring 3s ease-in-out infinite;
+}
+.sre-ring2{
+  position:absolute;inset:-32px;border-radius:50%;
+  border:1px solid rgba(251,191,36,.06);
+  animation:pulse-ring 3s ease-in-out infinite .5s;
+}
+@keyframes pulse-ring{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.03)}}
+
+/* ══════════════════════════════════════════
+   SCENE 04 — PROXIMY: Marketplace hologram
+   Floating product cards in blue void
+══════════════════════════════════════════ */
+.sp{
+  width:100%;height:100%;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 60%,#020d24 0%,#020810 100%);
+}
+/* Blue data streams */
+.sp-data{position:absolute;inset:0;overflow:hidden;}
+.sp-stream{
+  position:absolute;top:0;width:1px;
+  background:linear-gradient(to bottom,transparent,var(--blue),transparent);
+  animation:datafall linear infinite;
+}
+@keyframes datafall{from{transform:translateY(-100%);opacity:0}20%{opacity:.7}80%{opacity:.5}to{transform:translateY(100%);opacity:0}}
+/* Hexagonal grid */
+.sp-hex{
+  position:absolute;inset:-50%;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 0 L56 16 L56 50 L28 66 L0 50 L0 16Z' fill='none' stroke='rgba(14,95,252,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size:56px 100px;
+  animation:hexdrift 30s linear infinite;
+  opacity:.8;
+}
+@keyframes hexdrift{to{transform:translate(56px,100px)}}
+/* Holographic product cards floating in 3D */
+.sp-holo{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  perspective:600px;
+}
+.sp-card-stack{
+  position:relative;
+  width:clamp(130px,16vw,180px);
+}
+.sp-card{
+  position:absolute;
+  background:rgba(14,95,252,.07);
+  border:1px solid rgba(14,95,252,.2);
+  border-radius:12px;padding:14px;
+  backdrop-filter:blur(8px);
+  box-shadow:0 0 40px rgba(14,95,252,.08);
+  width:100%;
+  transition:transform .6s cubic-bezier(.16,1,.3,1),opacity .6s,box-shadow .6s;
+}
+/* Three-card floating deck */
+.sp-card:nth-child(1){
+  top:0;left:0;z-index:3;
+  transform:rotateY(-5deg) rotateX(3deg);
+  animation:holo1 4s ease-in-out infinite;
+}
+.sp-card:nth-child(2){
+  top:20px;left:12px;z-index:2;opacity:.7;
+  transform:rotateY(-2deg) rotateX(1deg) scale(.96);
+  animation:holo2 4s ease-in-out infinite .6s;
+}
+.sp-card:nth-child(3){
+  top:36px;left:22px;z-index:1;opacity:.4;
+  transform:rotateX(-1deg) scale(.92);
+  animation:holo3 4s ease-in-out infinite 1.2s;
+}
+.pa:hover .sp-card:nth-child(1){transform:rotateY(-12deg) rotateX(8deg) translateZ(20px);box-shadow:0 20px 60px rgba(14,95,252,.25),0 0 40px rgba(0,229,255,.1);}
+.pa:hover .sp-card:nth-child(2){transform:rotateY(-4deg) rotateX(4deg) translateZ(8px) scale(.96);}
+.pa:hover .sp-card:nth-child(3){transform:rotateX(-2deg) scale(.92);}
+@keyframes holo1{0%,100%{transform:rotateY(-5deg) rotateX(3deg) translateY(0)}50%{transform:rotateY(-8deg) rotateX(5deg) translateY(-8px)}}
+@keyframes holo2{0%,100%{transform:rotateY(-2deg) rotateX(1deg) scale(.96) translateY(0)}50%{transform:rotateY(-4deg) rotateX(3deg) scale(.96) translateY(-5px)}}
+@keyframes holo3{0%,100%{transform:rotateX(-1deg) scale(.92) translateY(0)}50%{transform:rotateX(-2deg) scale(.92) translateY(-3px)}}
+.sp-c-badge{font-family:var(--mono);font-size:.5rem;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;opacity:.7;}
+.sp-c-price{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;line-height:1;margin-bottom:8px;}
+.sp-c-bar{height:2px;background:rgba(255,255,255,.06);border-radius:1px;margin:4px 0;overflow:hidden;}
+.sp-c-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:1px;}
+.sp-c-tags{display:flex;gap:3px;flex-wrap:wrap;margin-top:8px;}
+.sp-c-tag{font-family:var(--mono);font-size:.45rem;color:rgba(14,95,252,.8);border:1px solid rgba(14,95,252,.2);border-radius:1px;padding:1px 5px;}
+/* Scan line on hover */
+.sp-scan{
+  position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  opacity:0;top:50%;
+  animation:scan-across 2s ease-in-out infinite;
+  filter:blur(1px);
+}
+.pa:hover .sp-scan{opacity:.6;}
+@keyframes scan-across{0%{top:0;opacity:0}10%{opacity:.6}90%{opacity:.6}100%{top:100%;opacity:0}}
+
+/* Mobile */
+@media(max-width:900px){
+  .proj-accordion{
+    flex-direction:column;
+    height:auto;
+  }
+  .pa{
+    flex:none;
+    height:clamp(260px,60vw,380px);
+  }
+  .proj-accordion:has(.pa:hover) .pa{flex:none;height:clamp(260px,60vw,380px);}
+  .proj-accordion:has(.pa:hover) .pa:hover{flex:none;height:clamp(380px,80vw,520px);}
+  .pa-collapsed{display:flex;opacity:1 !important;}
+  .pa-content{opacity:0;}
+  .pa:hover .pa-content{opacity:1;}
+  .pa:hover .pa-collapsed{opacity:0;}
+  .pa-idx,.pa-title-v{writing-mode:horizontal-tb;transform:none;}
+  .pa-collapsed{flex-direction:row;padding:0 24px;gap:12px;}
+}
 
 /* ═══════════════════════════════════════════════
    EXPERIENCE — TERMINAL STYLE
@@ -757,8 +1010,12 @@ footer{border-top:1px solid var(--border);padding:36px 5vw;position:relative;z-i
   .h-badge{display:none;}
 }
 @media(max-width:1000px){
-  .proj-grid{grid-template-columns:1fr;}
-  .pc:nth-child(n){border-radius:12px;}
+  .proj-list{gap:1px;}
+  .pc{height:clamp(200px,40vw,300px);flex-direction:column;}
+  .pc:hover{height:clamp(260px,50vw,380px);}
+  .pc-info{width:100%;background:linear-gradient(to top,rgba(7,9,15,.95) 60%,transparent 100%);padding:24px 20px;}
+  .pc-visual{flex:1;}
+  .pc-num{left:20px;}
   .proj-hd{flex-direction:column;}
   .exp-entry{grid-template-columns:120px 1fr;}
   .exp-entry::before{left:118px;}
@@ -773,7 +1030,8 @@ footer{border-top:1px solid var(--border);padding:36px 5vw;position:relative;z-i
   /* Hero */
   #home{padding:80px 20px 60px;overflow:hidden;}
   .hero-inner{grid-template-columns:1fr;gap:28px;text-align:center;overflow:hidden;}
-  .h-img-wrap{order:-1;justify-content:center;opacity:0;animation:fup .9s .3s ease forwards;transform:translateY(20px);}
+  .h-img-wrap{order:-1;justify-content:center;opacity:0;}
+  .h-img-wrap.ready{animation:fup .5s ease forwards;}
   .h-img-frame{width:min(190px,54vw);height:min(250px,70vw);max-width:100%;margin:0 auto;}
   .h-badge,.h-badge2{display:none;}
   .h-status{justify-content:center;}
@@ -785,7 +1043,9 @@ footer{border-top:1px solid var(--border);padding:36px 5vw;position:relative;z-i
   .h-stat{flex:0 0 auto;}
   .scroll-hint{display:none;}
   /* Sections */
-  #projects,#experience,#education,#skills,#contact{padding:80px 20px;}
+  #projects{padding:80px 0;}
+  #experience,#education,#skills,#contact{padding:80px 20px;}
+  .proj-hd{padding:0 20px;}
   .sec-title{font-size:clamp(2rem,9vw,3rem);}
   .proj-hd{margin-bottom:40px;}
   .exp-entry{grid-template-columns:1fr;padding-left:0;}
@@ -910,14 +1170,16 @@ footer{border-top:1px solid var(--border);padding:36px 5vw;position:relative;z-i
     </div>
     <div class="h-img-wrap">
       <div class="h-img-frame">
-        <div class="h-img-in"><img src="Images1.jpg" alt="Cédric Aplogan"/></div>
+        <div class="h-img-in"><img src="image.jpg" alt="Cédric Aplogan"/></div>
         <div class="h-badge">
           <div class="b-icon">💻</div>
           <div class="b-text"><strong>Full Stack Dev</strong><small>React · Node · Python</small></div>
         </div>
         <div class="h-badge2">
           <div class="b2-line"><span class="kw">const</span> dev = {</div>
-          <div class="b2-line">&nbsp;&nbsp;Power: <span class="str">"Vibe code and full code"</span>,</div>
+          <div class="b2-line">&nbsp;&nbsp;name: <span class="str">"Cédric"</span>,</div>
+          <div class="b2-line">&nbsp;&nbsp;stack: <span class="fn">fullstack</span>,</div>
+          <div class="b2-line">&nbsp;&nbsp;status: <span class="str">"open"</span></div>
           <div class="b2-line">}</div>
         </div>
       </div>
@@ -939,111 +1201,165 @@ footer{border-top:1px solid var(--border);padding:36px 5vw;position:relative;z-i
       <div class="eyebrow">Mes réalisations</div>
       <h2 class="sec-title">Projets<br/><span class="o">Réalisés</span></h2>
     </div>
-    <div class="proj-count rv d2">04 projets<br/>2025 — 2026<br/>Bénin & Global</div>
+    <div class="proj-count rv d2">04 projets<br/>2025 — 2026<br/>Bénin &amp; Global</div>
   </div>
-  <div class="proj-grid">
-    <!-- Nova -->
-    <a href="https://cedricapl.github.io/Nova/" target="_blank" class="pc rv" data-label="OUVRIR">
-      <div class="pv">
-        <div class="vn">
-          <div class="vn-grid"></div>
-          <div class="nr"></div><div class="nr"></div><div class="nr"></div>
-          <div class="vn-core">NOVA</div>
-        </div>
-        <div class="p-overlay">
-          <div class="p-corner tl"></div>
-          <div class="p-corner br"></div>
-          <div class="p-view-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
-            Voir le projet
-          </div>
+
+  <div class="proj-accordion">
+
+    <!-- ── 01 NOVA — Synthwave Cosmos ── -->
+    <a href="https://cedricapl.github.io/Nova/" target="_blank" class="pa rv" data-label="NOVA">
+      <div class="pa-scene">
+        <div class="sn">
+          <div class="sn-stars" id="sn-stars"></div>
+          <div class="sn-grid"></div>
+          <div class="sn-horizon"></div>
+          <div class="sn-sun"></div>
+          <div class="sn-title">NOVA</div>
         </div>
       </div>
-      <div class="pi">
-        <div class="pi-idx">01 / Interface</div>
-        <h3 class="pi-name">Nova</h3>
-        <p class="pi-desc">Interface moderne et épurée explorant de nouveaux horizons visuels avec React et animations avancées.</p>
-        <div class="pi-tags"><span class="pi-tag">React</span><span class="pi-tag">Tailwind</span><span class="pi-tag">UI Design</span></div>
+      <div class="pa-collapsed">
+        <span class="pa-idx">01</span>
+        <span class="pa-title-v">Nova</span>
+      </div>
+      <div class="pa-content">
+        <div class="pa-eyebrow">Interface · 2025</div>
+        <h3 class="pa-name">Nova</h3>
+        <p class="pa-desc">Interface moderne explorant de nouveaux horizons visuels — React, animations 3D et design synthwave.</p>
+        <div class="pa-tags">
+          <span class="pa-tag">React</span><span class="pa-tag">Tailwind</span><span class="pa-tag">UI Design</span>
+        </div>
+        <div class="pa-cta">
+          Voir le projet
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
       </div>
     </a>
-    <!-- Ricko -->
-    <a href="https://cedricapl.github.io/Chez-Ricko/" target="_blank" class="pc rv d1" data-label="OUVRIR">
-      <div class="pv">
-        <div class="vr">
-          <div class="vr-glow"></div>
-          <div class="vr-lines">
-            <div class="vr-line" style="top:20%"></div><div class="vr-line" style="top:40%"></div>
-            <div class="vr-line" style="top:60%"></div><div class="vr-line" style="top:80%"></div>
+
+    <!-- ── 02 CHEZ RICKO — Street Food Night ── -->
+    <a href="https://cedricapl.github.io/Chez-Ricko/" target="_blank" class="pa rv d1" data-label="RICKO">
+      <div class="pa-scene">
+        <div class="sr">
+          <div class="sr-bokeh" id="sr-bokeh"></div>
+          <div class="sr-steam" id="sr-steam"></div>
+          <div class="sr-strip" style="bottom:32%"></div>
+          <div class="sr-strip" style="bottom:28%;opacity:.5"></div>
+          <div class="sr-neon">
+            <div class="sr-neon-text">Chez Ricko</div>
+            <div class="sr-neon-sub">Restaurant · Zogbadjè</div>
           </div>
-          <div class="vr-content">
-            <span class="vr-emoji">🍽️</span>
-            <div class="vr-name">Chez Ricko</div>
-            <div class="vr-sub">Restaurant · Zogbadjè</div>
-          </div>
-        </div>
-        <div class="p-overlay">
-          <div class="p-corner tl"></div><div class="p-corner br"></div>
-          <div class="p-view-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Voir le projet</div>
         </div>
       </div>
-      <div class="pi">
-        <div class="pi-idx">02 / Site Vitrine</div>
-        <h3 class="pi-name">Chez Ricko</h3>
-        <p class="pi-desc">Site vitrine pour restaurant de Zogbadjè — menu dynamique et commandes WhatsApp intégrées.</p>
-        <div class="pi-tags"><span class="pi-tag">React</span><span class="pi-tag">WhatsApp API</span><span class="pi-tag">Local Business</span></div>
+      <div class="pa-collapsed">
+        <span class="pa-idx">02</span>
+        <span class="pa-title-v">Chez Ricko</span>
+      </div>
+      <div class="pa-content">
+        <div class="pa-eyebrow">Site Vitrine · 2025</div>
+        <h3 class="pa-name">Chez<br/>Ricko</h3>
+        <p class="pa-desc">Site vitrine pour restaurant — menu dynamique, ambiance chaleureuse et commandes WhatsApp intégrées.</p>
+        <div class="pa-tags">
+          <span class="pa-tag">React</span><span class="pa-tag">WhatsApp API</span><span class="pa-tag">Local Business</span>
+        </div>
+        <div class="pa-cta">
+          Voir le projet
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
       </div>
     </a>
-    <!-- Resto -->
-    <a href="https://cedricapl.github.io/Resto/" target="_blank" class="pc rv d2" data-label="OUVRIR">
-      <div class="pv">
-        <div class="vres">
-          <div class="vres-bg"></div>
-          <div class="rcds">
-            <div class="rcd"><span class="rce">🥩</span><span class="rcl">Grillades</span></div>
-            <div class="rcd" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.1)"><span class="rce">🍜</span><span class="rcl">Plats</span></div>
-            <div class="rcd"><span class="rce">🍹</span><span class="rcl">Boissons</span></div>
+
+    <!-- ── 03 RESTO — Luxury Tasting Menu ── -->
+    <a href="https://cedricapl.github.io/Resto/" target="_blank" class="pa rv d2" data-label="RESTO">
+      <div class="pa-scene">
+        <div class="sre">
+          <div class="sre-tex"></div>
+          <div class="sre-lines">
+            <div class="sre-line" style="top:20%"></div>
+            <div class="sre-line" style="top:50%"></div>
+            <div class="sre-line" style="top:80%"></div>
           </div>
-        </div>
-        <div class="p-overlay">
-          <div class="p-corner tl"></div><div class="p-corner br"></div>
-          <div class="p-view-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Voir le projet</div>
-        </div>
-      </div>
-      <div class="pi">
-        <div class="pi-idx">03 / Application</div>
-        <h3 class="pi-name">Resto</h3>
-        <p class="pi-desc">Application de présentation pour établissements culinaires avec UX optimisée et design épuré.</p>
-        <div class="pi-tags"><span class="pi-tag">Frontend</span><span class="pi-tag">UX Design</span></div>
-      </div>
-    </a>
-    <!-- Proximy -->
-    <a href="https://cedricapl.github.io/proximy/" target="_blank" class="pc rv d3" data-label="OUVRIR">
-      <div class="pv">
-        <div class="vp">
-          <div class="vp-pts" id="vpts"></div>
-          <div class="vp-card">
-            <div class="vp-price">24 000 FCFA</div>
-            <div class="vp-bar b8"><span></span></div>
-            <div class="vp-bar b6"><span></span></div>
-            <div class="vp-pills">
-              <span class="vp-pill">Occasion</span><span class="vp-pill">Cotonou</span><span class="vp-pill">Neuf</span>
+          <div class="sre-stage">
+            <div class="sre-orbit">
+              <div class="sre-ring"></div>
+              <div class="sre-ring2"></div>
+              <div class="sre-plate"><span class="sre-pe">🍝</span><span class="sre-pl">Pasta</span></div>
+              <div class="sre-plate"><span class="sre-pe">🥗</span><span class="sre-pl">Salade</span></div>
+              <div class="sre-plate"><span class="sre-pe">🥩</span><span class="sre-pl">Viande</span></div>
+              <div class="sre-plate"><span class="sre-pe">🍷</span><span class="sre-pl">Vin</span></div>
             </div>
           </div>
         </div>
-        <div class="p-overlay">
-          <div class="p-corner tl"></div><div class="p-corner br"></div>
-          <div class="p-view-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Voir le projet</div>
+      </div>
+      <div class="pa-collapsed">
+        <span class="pa-idx">03</span>
+        <span class="pa-title-v">Resto</span>
+      </div>
+      <div class="pa-content">
+        <div class="pa-eyebrow">Application · 2025</div>
+        <h3 class="pa-name">Resto</h3>
+        <p class="pa-desc">Application culinaire premium — cartes de menu interactives, UX optimisée et design gastronomique.</p>
+        <div class="pa-tags">
+          <span class="pa-tag">Frontend</span><span class="pa-tag">UX Design</span>
+        </div>
+        <div class="pa-cta">
+          Voir le projet
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
       </div>
-      <div class="pi">
-        <div class="pi-idx">04 / E-commerce</div>
-        <h3 class="pi-name">Proximy</h3>
-        <p class="pi-desc">Plateforme de vente de biens d'occasion — navigation fluide, moderne et expérience utilisateur optimisée.</p>
-        <div class="pi-tags"><span class="pi-tag">Next.js</span><span class="pi-tag">Tailwind</span><span class="pi-tag">E-commerce</span></div>
+    </a>
+
+    <!-- ── 04 PROXIMY — Marketplace Hologram ── -->
+    <a href="https://cedricapl.github.io/proximy/" target="_blank" class="pa rv d3" data-label="PROXIMY">
+      <div class="pa-scene">
+        <div class="sp">
+          <div class="sp-hex"></div>
+          <div class="sp-data" id="sp-data"></div>
+          <div class="sp-holo">
+            <div class="sp-card-stack">
+              <div class="sp-scan"></div>
+              <div class="sp-card">
+                <div class="sp-c-badge">Vedette</div>
+                <div class="sp-c-price">24 000 F</div>
+                <div class="sp-c-bar"><span style="width:80%"></span></div>
+                <div class="sp-c-bar"><span style="width:55%"></span></div>
+                <div class="sp-c-tags">
+                  <span class="sp-c-tag">Occasion</span>
+                  <span class="sp-c-tag">Cotonou</span>
+                </div>
+              </div>
+              <div class="sp-card">
+                <div class="sp-c-badge">Populaire</div>
+                <div class="sp-c-price">8 500 F</div>
+                <div class="sp-c-bar"><span style="width:65%"></span></div>
+              </div>
+              <div class="sp-card">
+                <div class="sp-c-badge">Nouveau</div>
+                <div class="sp-c-price">15 000 F</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pa-collapsed">
+        <span class="pa-idx">04</span>
+        <span class="pa-title-v">Proximy</span>
+      </div>
+      <div class="pa-content">
+        <div class="pa-eyebrow">E-commerce · 2026</div>
+        <h3 class="pa-name">Proximy</h3>
+        <p class="pa-desc">Plateforme de vente d'occasion — navigation holographique, UX pensée pour Cotonou et au-delà.</p>
+        <div class="pa-tags">
+          <span class="pa-tag">Next.js</span><span class="pa-tag">Tailwind</span><span class="pa-tag">E-commerce</span>
+        </div>
+        <div class="pa-cta">
+          Voir le projet
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
       </div>
     </a>
+
   </div>
 </section>
+
 
 <!-- EXPERIENCE — Terminal -->
 <section id="experience">
@@ -1350,6 +1666,7 @@ function dismiss(){
   loader.classList.add('exit');
   loader.addEventListener('animationend',()=>{
     loader.style.display='none';
+    document.querySelectorAll('.h-img-wrap').forEach(function(el){el.classList.add('ready');});
     document.getElementById('mnav').classList.add('on');
   },{once:true});
 }
@@ -1404,43 +1721,56 @@ const eduObs=new IntersectionObserver(entries=>{
 },{threshold:.3});
 document.querySelectorAll('.edu-item').forEach(el=>eduObs.observe(el));
 
+
 /* ══════════════════════════════════
-   PROXIMY PARTICLES
+   SCENE GENERATORS
 ══════════════════════════════════ */
-const vpts=document.getElementById('vpts');
-if(vpts){
-  for(let i=0;i<16;i++){
-    const p=document.createElement('div');p.className='vp-pt';
-    const sz=Math.random()*3+1;
-    p.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;animation-duration:${3+Math.random()*5}s;animation-delay:${Math.random()*4}s;`;
-    vpts.appendChild(p);
+
+/* ── Nova: synthwave stars ── */
+(function(){
+  const el=document.getElementById('sn-stars');
+  if(!el)return;
+  for(let i=0;i<120;i++){
+    const s=document.createElement('div');
+    const sz=Math.random()*2+.3;
+    const bright=Math.random()>.8;
+    s.style.cssText=`position:absolute;width:${sz}px;height:${sz}px;background:${bright?'rgba(200,180,255,.9)':'rgba(255,255,255,.5)'};border-radius:50%;left:${Math.random()*100}%;top:${Math.random()*70}%;animation:twinkle ${2+Math.random()*4}s ease-in-out ${Math.random()*4}s infinite;`;
+    el.appendChild(s);
   }
-}
+})();
 
-/* ══════════════════════════════════
-   NOVA ORBIT DOTS
-══════════════════════════════════ */
-document.querySelectorAll('.nr').forEach((r,i)=>{
-  const d=document.createElement('div');
-  const sz=[90,160,230][i];
-  d.style.cssText=`position:absolute;width:${i===0?8:6}px;height:${i===0?8:6}px;background:${i===0?'var(--cyan)':'rgba(14,95,252,.8)'};border-radius:50%;top:calc(50% - ${i===0?4:3}px);left:calc(50% + ${sz/2}px - ${i===0?4:3}px);box-shadow:0 0 ${i===0?16:10}px var(--cyan);`;
-  r.style.position='relative';r.appendChild(d);
-});
+/* ── Ricko: bokeh city lights ── */
+(function(){
+  const el=document.getElementById('sr-bokeh');
+  if(!el)return;
+  const colors=['rgba(251,146,60,.4)','rgba(251,100,20,.3)','rgba(255,200,100,.25)','rgba(200,80,10,.35)'];
+  for(let i=0;i<18;i++){
+    const b=document.createElement('div');b.className='sr-bk';
+    const sz=Math.random()*80+20;
+    b.style.cssText=`width:${sz}px;height:${sz}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}%;top:${Math.random()*80}%;animation-duration:${3+Math.random()*5}s;animation-delay:${Math.random()*4}s;`;
+    el.appendChild(b);
+  }
+  /* Steam columns */
+  const steam=document.getElementById('sr-steam');
+  if(!steam)return;
+  for(let i=0;i<12;i++){
+    const st=document.createElement('div');st.className='sr-st';
+    st.style.cssText=`left:${10+Math.random()*80}%;width:${2+Math.random()*4}px;animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*3}s;`;
+    steam.appendChild(st);
+  }
+})();
 
-/* ══════════════════════════════════
-   PROJECT CARD — 3D TILT
-══════════════════════════════════ */
-document.querySelectorAll('.pc').forEach(card=>{
-  card.addEventListener('mousemove',e=>{
-    const r=card.getBoundingClientRect();
-    const x=(e.clientX-r.left)/r.width-.5;
-    const y=(e.clientY-r.top)/r.height-.5;
-    card.style.transform=`perspective(1000px) rotateY(${x*6}deg) rotateX(${-y*4}deg) scale(1.02)`;
-  });
-  card.addEventListener('mouseleave',()=>{
-    card.style.transform='';
-  });
-});
+/* ── Proximy: data streams ── */
+(function(){
+  const el=document.getElementById('sp-data');
+  if(!el)return;
+  for(let i=0;i<20;i++){
+    const s=document.createElement('div');s.className='sp-stream';
+    const h=Math.random()*200+80;
+    s.style.cssText=`left:${Math.random()*100}%;height:${h}px;animation-duration:${2+Math.random()*4}s;animation-delay:${Math.random()*5}s;opacity:${.3+Math.random()*.5};`;
+    el.appendChild(s);
+  }
+})();
 
 /* ══════════════════════════════════
    NAV ACTIVE
@@ -1455,6 +1785,7 @@ window.addEventListener('scroll',()=>{
     else{a.classList.remove('active');}
   });
 },{passive:true});
+
 </script>
 </body>
 </html>
