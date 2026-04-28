@@ -753,25 +753,179 @@ nav.on{opacity:1;transform:translateY(0);}
 .pa:hover .sp-scan{opacity:.6;}
 @keyframes scan-across{0%{top:0;opacity:0}10%{opacity:.6}90%{opacity:.6}100%{top:100%;opacity:0}}
 
-/* Mobile */
-@media(max-width:900px){
-  .proj-accordion{
+/* ═══════════════════════════════════════════════
+   MOBILE PROJECTS — SCROLL SNAP STORIES
+   Concept: Chaque projet = une "story" plein écran
+   Navigation horizontale snap-scroll avec indicateurs
+   et révélation progressive au scroll.
+═══════════════════════════════════════════════ */
+@media(max-width:768px){
+
+  /* Hide desktop accordion */
+  .proj-accordion{display:none;}
+
+  /* Mobile container */
+  .proj-mobile{display:block;}
+  .proj-mobile-track{
+    display:flex;
+    overflow-x:scroll;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    gap:0;
+    /* Full viewport width */
+    width:100vw;
+    margin-left:calc(-5vw);
+  }
+  .proj-mobile-track::-webkit-scrollbar{display:none;}
+
+  /* Each story slide */
+  .pm-slide{
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+    flex:0 0 100vw;
+    width:100vw;
+    height:90svh;
+    position:relative;
+    overflow:hidden;
+    display:flex;
     flex-direction:column;
-    height:auto;
+    justify-content:flex-end;
   }
-  .pa{
-    flex:none;
-    height:clamp(260px,60vw,380px);
+
+  /* Scene fills entire slide */
+  .pm-scene{
+    position:absolute;inset:0;
+    z-index:0;
   }
-  .proj-accordion:has(.pa:hover) .pa{flex:none;height:clamp(260px,60vw,380px);}
-  .proj-accordion:has(.pa:hover) .pa:hover{flex:none;height:clamp(380px,80vw,520px);}
-  .pa-collapsed{display:flex;opacity:1 !important;}
-  .pa-content{opacity:0;}
-  .pa:hover .pa-content{opacity:1;}
-  .pa:hover .pa-collapsed{opacity:0;}
-  .pa-idx,.pa-title-v{writing-mode:horizontal-tb;transform:none;}
-  .pa-collapsed{flex-direction:row;padding:0 24px;gap:12px;}
+  .pm-scene > *{width:100%;height:100%;}
+
+  /* Gradient overlay — cinematic bottom fade */
+  .pm-slide::after{
+    content:'';
+    position:absolute;inset:0;
+    background:linear-gradient(
+      to top,
+      rgba(7,9,15,.98) 0%,
+      rgba(7,9,15,.7) 35%,
+      rgba(7,9,15,.2) 60%,
+      transparent 100%
+    );
+    z-index:1;
+    pointer-events:none;
+  }
+
+  /* Content block at bottom */
+  .pm-content{
+    position:relative;z-index:2;
+    padding:0 24px 32px;
+  }
+
+  /* Number + category row */
+  .pm-meta{
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:12px;
+  }
+  .pm-num{
+    font-family:var(--mono);font-size:.58rem;
+    color:var(--cyan);letter-spacing:.25em;
+  }
+  .pm-sep{width:24px;height:1px;background:rgba(0,229,255,.4);}
+  .pm-cat{
+    font-family:var(--mono);font-size:.56rem;
+    color:var(--muted);letter-spacing:.18em;text-transform:uppercase;
+  }
+
+  /* Title */
+  .pm-title{
+    font-family:'Syne',sans-serif;font-weight:800;
+    font-size:clamp(2.2rem,9vw,3.5rem);
+    letter-spacing:-.04em;text-transform:uppercase;
+    line-height:.9;margin-bottom:12px;
+    color:var(--text);
+  }
+
+  /* Description */
+  .pm-desc{
+    font-size:.84rem;color:rgba(237,242,255,.6);
+    line-height:1.65;margin-bottom:16px;
+    max-width:88%;
+  }
+
+  /* Tags row */
+  .pm-tags{
+    display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;
+  }
+  .pm-tag{
+    font-family:var(--mono);font-size:.52rem;
+    color:var(--cyan);
+    border:1px solid rgba(0,229,255,.25);
+    border-radius:2px;padding:3px 9px;
+    background:rgba(0,229,255,.05);
+  }
+
+  /* CTA button */
+  .pm-cta{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--text);color:var(--bg);
+    font-family:var(--mono);font-size:.65rem;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;
+    padding:12px 24px;border-radius:2px;
+    text-decoration:none;
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .2s,box-shadow .2s;
+  }
+  .pm-cta:active{transform:scale(.96);}
+
+  /* ── Scroll progress dots ── */
+  .proj-mobile-dots{
+    display:flex;justify-content:center;align-items:center;gap:8px;
+    padding:16px 0 8px;
+  }
+  .pmd{
+    width:20px;height:2px;border-radius:1px;
+    background:rgba(255,255,255,.12);
+    transition:background .35s,width .35s;
+  }
+  .pmd.active{
+    background:var(--cyan);width:36px;
+    box-shadow:0 0 8px rgba(0,229,255,.5);
+  }
+
+  /* ── Swipe hint (fades after first interaction) ── */
+  .proj-swipe-hint{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    font-family:var(--mono);font-size:.58rem;color:var(--muted);
+    letter-spacing:.15em;text-transform:uppercase;
+    padding-bottom:20px;
+    animation:hint-fade 1s 3s ease forwards;
+  }
+  @keyframes hint-fade{to{opacity:0;pointer-events:none;}}
+  .hint-arrow{
+    display:flex;gap:3px;
+  }
+  .hint-arrow span{
+    width:5px;height:5px;border-right:1px solid var(--muted);border-top:1px solid var(--muted);
+    transform:rotate(45deg);
+    animation:hint-arrow-pulse .8s ease-in-out infinite;
+  }
+  .hint-arrow span:nth-child(2){animation-delay:.15s;opacity:.6;}
+  .hint-arrow span:nth-child(3){animation-delay:.3s;opacity:.3;}
+  @keyframes hint-arrow-pulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+  /* ── Slide-in animation on snap ── */
+  .pm-content{
+    opacity:0;transform:translateY(20px);
+    transition:opacity .5s,transform .5s;
+  }
+  .pm-slide.snapped .pm-content{opacity:1;transform:translateY(0);}
 }
+
+/* Hide mobile on desktop */
+@media(min-width:769px){
+  .proj-mobile{display:none;}
+}
+
 
 /* ═══════════════════════════════════════════════
    EXPERIENCE — TERMINAL STYLE
@@ -1170,7 +1324,7 @@ footer{border-top:1px solid var(--border);padding:36px 5vw;position:relative;z-i
     </div>
     <div class="h-img-wrap">
       <div class="h-img-frame">
-        <div class="h-img-in"><img src="Images.jpg" alt="Cédric Aplogan"/></div>
+        <div class="h-img-in"><img src="image.jpg" alt="Cédric Aplogan"/></div>
         <div class="h-badge">
           <div class="b-icon">💻</div>
           <div class="b-text"><strong>Full Stack Dev</strong><small>React · Node · Python</small></div>
@@ -1358,6 +1512,186 @@ footer{border-top:1px solid var(--border);padding:36px 5vw;position:relative;z-i
     </a>
 
   </div>
+
+  <!-- ══ MOBILE STORIES — smartphone only ══ -->
+  <div class="proj-mobile">
+    <div class="proj-mobile-track" id="pmtrack">
+
+      <!-- Story 01 — Nova -->
+      <div class="pm-slide snapped" data-idx="0">
+        <div class="pm-scene">
+          <div class="sn" id="sn-mob">
+            <div class="sn-stars" id="sn-stars-mob"></div>
+            <div class="sn-grid"></div>
+            <div class="sn-horizon"></div>
+            <div class="sn-sun"></div>
+            <div class="sn-title">NOVA</div>
+          </div>
+        </div>
+        <div class="pm-content">
+          <div class="pm-meta">
+            <span class="pm-num">01</span>
+            <span class="pm-sep"></span>
+            <span class="pm-cat">Interface</span>
+          </div>
+          <h3 class="pm-title">Nova</h3>
+          <p class="pm-desc">Interface moderne explorant de nouveaux horizons visuels — React, animations 3D et design synthwave.</p>
+          <div class="pm-tags">
+            <span class="pm-tag">React</span>
+            <span class="pm-tag">Tailwind</span>
+            <span class="pm-tag">UI Design</span>
+          </div>
+          <a href="https://cedricapl.github.io/Nova/" target="_blank" class="pm-cta">
+            Ouvrir
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Story 02 — Chez Ricko -->
+      <div class="pm-slide" data-idx="1">
+        <div class="pm-scene">
+          <div class="sr">
+            <div class="sr-bokeh" id="sr-bokeh-mob"></div>
+            <div class="sr-steam" id="sr-steam-mob"></div>
+            <div class="sr-strip" style="bottom:32%"></div>
+            <div class="sr-neon">
+              <div class="sr-neon-text">Chez Ricko</div>
+              <div class="sr-neon-sub">Restaurant · Zogbadjè</div>
+            </div>
+          </div>
+        </div>
+        <div class="pm-content">
+          <div class="pm-meta">
+            <span class="pm-num">02</span>
+            <span class="pm-sep"></span>
+            <span class="pm-cat">Site Vitrine</span>
+          </div>
+          <h3 class="pm-title">Chez<br/>Ricko</h3>
+          <p class="pm-desc">Site vitrine restaurant — menu dynamique, ambiance chaleureuse et commandes WhatsApp intégrées.</p>
+          <div class="pm-tags">
+            <span class="pm-tag">React</span>
+            <span class="pm-tag">WhatsApp API</span>
+          </div>
+          <a href="https://cedricapl.github.io/Chez-Ricko/" target="_blank" class="pm-cta">
+            Ouvrir
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Story 03 — Resto -->
+      <div class="pm-slide" data-idx="2">
+        <div class="pm-scene">
+          <div class="sre">
+            <div class="sre-tex"></div>
+            <div class="sre-lines">
+              <div class="sre-line" style="top:20%"></div>
+              <div class="sre-line" style="top:50%"></div>
+              <div class="sre-line" style="top:80%"></div>
+            </div>
+            <div class="sre-stage">
+              <div class="sre-orbit">
+                <div class="sre-ring"></div>
+                <div class="sre-ring2"></div>
+                <div class="sre-plate"><span class="sre-pe">🍝</span><span class="sre-pl">Pasta</span></div>
+                <div class="sre-plate"><span class="sre-pe">🥗</span><span class="sre-pl">Salade</span></div>
+                <div class="sre-plate"><span class="sre-pe">🥩</span><span class="sre-pl">Viande</span></div>
+                <div class="sre-plate"><span class="sre-pe">🍷</span><span class="sre-pl">Vin</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pm-content">
+          <div class="pm-meta">
+            <span class="pm-num">03</span>
+            <span class="pm-sep"></span>
+            <span class="pm-cat">Application</span>
+          </div>
+          <h3 class="pm-title">Resto</h3>
+          <p class="pm-desc">Application culinaire premium — cartes de menu interactives et design gastronomique élégant.</p>
+          <div class="pm-tags">
+            <span class="pm-tag">Frontend</span>
+            <span class="pm-tag">UX Design</span>
+          </div>
+          <a href="https://cedricapl.github.io/Resto/" target="_blank" class="pm-cta">
+            Ouvrir
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Story 04 — Proximy -->
+      <div class="pm-slide" data-idx="3">
+        <div class="pm-scene">
+          <div class="sp">
+            <div class="sp-hex"></div>
+            <div class="sp-data" id="sp-data-mob"></div>
+            <div class="sp-holo">
+              <div class="sp-card-stack">
+                <div class="sp-scan"></div>
+                <div class="sp-card">
+                  <div class="sp-c-badge">Vedette</div>
+                  <div class="sp-c-price">24 000 F</div>
+                  <div class="sp-c-bar"><span style="width:80%"></span></div>
+                  <div class="sp-c-tags">
+                    <span class="sp-c-tag">Occasion</span>
+                    <span class="sp-c-tag">Cotonou</span>
+                  </div>
+                </div>
+                <div class="sp-card">
+                  <div class="sp-c-badge">Populaire</div>
+                  <div class="sp-c-price">8 500 F</div>
+                  <div class="sp-c-bar"><span style="width:65%"></span></div>
+                </div>
+                <div class="sp-card">
+                  <div class="sp-c-badge">Nouveau</div>
+                  <div class="sp-c-price">15 000 F</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pm-content">
+          <div class="pm-meta">
+            <span class="pm-num">04</span>
+            <span class="pm-sep"></span>
+            <span class="pm-cat">E-commerce</span>
+          </div>
+          <h3 class="pm-title">Proximy</h3>
+          <p class="pm-desc">Plateforme de vente d'occasion — navigation holographique et UX pensée pour Cotonou.</p>
+          <div class="pm-tags">
+            <span class="pm-tag">Next.js</span>
+            <span class="pm-tag">Tailwind</span>
+            <span class="pm-tag">E-commerce</span>
+          </div>
+          <a href="https://cedricapl.github.io/proximy/" target="_blank" class="pm-cta">
+            Ouvrir
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div><!-- end track -->
+
+    <!-- Progress dots -->
+    <div class="proj-mobile-dots" id="pmdots">
+      <div class="pmd active"></div>
+      <div class="pmd"></div>
+      <div class="pmd"></div>
+      <div class="pmd"></div>
+    </div>
+
+    <!-- Swipe hint -->
+    <div class="proj-swipe-hint" id="swipe-hint">
+      Swiper
+      <div class="hint-arrow">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+  </div><!-- end proj-mobile -->
+
 </section>
 
 
@@ -1770,6 +2104,90 @@ document.querySelectorAll('.edu-item').forEach(el=>eduObs.observe(el));
     s.style.cssText=`left:${Math.random()*100}%;height:${h}px;animation-duration:${2+Math.random()*4}s;animation-delay:${Math.random()*5}s;opacity:${.3+Math.random()*.5};`;
     el.appendChild(s);
   }
+})();
+
+
+/* ══════════════════════════════════
+   MOBILE STORIES — scroll snap logic
+══════════════════════════════════ */
+(function(){
+  const track = document.getElementById('pmtrack');
+  const dots  = document.querySelectorAll('.pmd');
+  const slides = document.querySelectorAll('.pm-slide');
+  const hint   = document.getElementById('swipe-hint');
+  if(!track) return;
+
+  let current = 0;
+  let hintDismissed = false;
+
+  /* Helper: populate particles for a given container id */
+  function makeStars(id, count){
+    const el = document.getElementById(id);
+    if(!el) return;
+    for(let i=0;i<count;i++){
+      const s=document.createElement('div');
+      const sz=Math.random()*2+.3;
+      const bright=Math.random()>.8;
+      s.style.cssText=`position:absolute;width:${sz}px;height:${sz}px;background:${bright?'rgba(200,180,255,.9)':'rgba(255,255,255,.5)'};border-radius:50%;left:${Math.random()*100}%;top:${Math.random()*70}%;animation:twinkle ${2+Math.random()*4}s ease-in-out ${Math.random()*4}s infinite;`;
+      el.appendChild(s);
+    }
+  }
+  function makeBokeh(bokehId, steamId){
+    const el=document.getElementById(bokehId);
+    const colors=['rgba(251,146,60,.4)','rgba(251,100,20,.3)','rgba(255,200,100,.25)'];
+    if(el){for(let i=0;i<16;i++){const b=document.createElement('div');b.className='sr-bk';const sz=Math.random()*80+20;b.style.cssText=`width:${sz}px;height:${sz}px;background:${colors[i%3]};left:${Math.random()*100}%;top:${Math.random()*80}%;animation-duration:${3+Math.random()*5}s;animation-delay:${Math.random()*4}s;`;el.appendChild(b);}}
+    const steam=document.getElementById(steamId);
+    if(steam){for(let i=0;i<10;i++){const st=document.createElement('div');st.className='sr-st';st.style.cssText=`left:${10+Math.random()*80}%;width:${2+Math.random()*4}px;animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*3}s;`;steam.appendChild(st);}}
+  }
+  function makeStreams(id){
+    const el=document.getElementById(id);
+    if(!el)return;
+    for(let i=0;i<16;i++){const s=document.createElement('div');s.className='sp-stream';const h=Math.random()*200+80;s.style.cssText=`left:${Math.random()*100}%;height:${h}px;animation-duration:${2+Math.random()*4}s;animation-delay:${Math.random()*5}s;opacity:${.3+Math.random()*.5};`;el.appendChild(s);}
+  }
+
+  /* Populate mobile scene particles */
+  makeStars('sn-stars-mob', 100);
+  makeBokeh('sr-bokeh-mob','sr-steam-mob');
+  makeStreams('sp-data-mob');
+
+  /* Update dots + slide animation on scroll */
+  function onScroll(){
+    const idx = Math.round(track.scrollLeft / track.offsetWidth);
+    if(idx !== current){
+      /* Remove snapped from old slide */
+      slides[current].classList.remove('snapped');
+      current = idx;
+      /* Add snapped to new slide (triggers content animation) */
+      slides[current].classList.add('snapped');
+      /* Update dots */
+      dots.forEach((d,i)=>{
+        d.classList.toggle('active', i===current);
+      });
+      /* Dismiss swipe hint on first swipe */
+      if(!hintDismissed && hint){
+        hint.style.display='none';
+        hintDismissed=true;
+      }
+    }
+  }
+
+  track.addEventListener('scroll', onScroll, {passive:true});
+
+  /* Tap on dot → scroll to slide */
+  dots.forEach((d,i)=>{
+    d.addEventListener('click',()=>{
+      track.scrollTo({left: i * track.offsetWidth, behavior:'smooth'});
+    });
+  });
+
+  /* Touch swipe: trigger content reveal immediately on touchend */
+  let touchStartX = 0;
+  track.addEventListener('touchstart', e=>{touchStartX=e.touches[0].clientX;},{passive:true});
+  track.addEventListener('touchend', e=>{
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if(Math.abs(diff) > 30) setTimeout(onScroll, 300);
+  },{passive:true});
+
 })();
 
 /* ══════════════════════════════════
